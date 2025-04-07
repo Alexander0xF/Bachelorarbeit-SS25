@@ -10,7 +10,7 @@ public class QSO {
     private Quokka leader;
     private int numCitys;
     private double lastFitness;
-    private static final int MAX_ITERATIONS = 1001;
+    private static final int MAX_ITERATIONS = 10001;
     private static final int MAX_POPULATION = 10;
 
     public QSO() {
@@ -61,7 +61,7 @@ public class QSO {
         }
         q.setPosition(position);
         q.swapRandom();
-        leader.swapRandom();        
+        //leader.swapRandom();        
     }
  
 
