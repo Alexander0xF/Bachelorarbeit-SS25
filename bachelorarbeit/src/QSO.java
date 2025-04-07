@@ -38,10 +38,10 @@ public class QSO {
             }
             for(Quokka q : population) {
                 if(q != leader) {
-                int deltaX = computeHammingDistance(q);
-                getProbability(q, deltaX, T, H);
-                updatePosition(q);
-                q.computeFitness();
+                    int deltaX = computeHammingDistance(q);
+                    getProbability(q, deltaX, T, H);
+                    updatePosition(q);
+                    q.computeFitness();
                 }
             }
         }
