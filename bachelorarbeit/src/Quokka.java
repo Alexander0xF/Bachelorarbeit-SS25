@@ -1,17 +1,23 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import java.util.Random;
 public class Quokka {
-    private List<Integer> tourIndex = new ArrayList<>();
-    private List<Edge> position = new ArrayList<>();
+    private List<Integer> position = new ArrayList<>();
     private double fitness;
-    private Edge[][] adjacencyMatrix;
+    private double[][] adjacencyMatrix;
     private double[] drought;
+    int identifier;
+    Random rand = new Random();
 
-    public Quokka(WeightedGraph graph) {
+    public int getIdentifier() {
+        return identifier;
+    }
+
+    public Quokka(WeightedGraph graph, int ident) {
         adjacencyMatrix = graph.getAdjacencyMatrix();
         drought = new double[adjacencyMatrix.length];
+        identifier = ident;
         computeTour(graph);
         computeFitness();
     }
@@ -19,27 +25,26 @@ public class Quokka {
     public void computeTour(WeightedGraph graph) {
         //Edge[][] adjacencyMatrix = graph.getAdjacencyMatrix();
         for(int i = 0; i < adjacencyMatrix.length; i++) {
-            tourIndex.add(i);
+            position.add(i);
         }
-        Collections.shuffle(tourIndex);
-        int cnt = 0;
-        for(int i : tourIndex) {
-            try {
-                position.add(cnt, adjacencyMatrix[i][tourIndex.get(cnt+1)]);
-                
-                cnt++;
-            } catch(IndexOutOfBoundsException e) {
-                position.add(cnt, adjacencyMatrix[i][tourIndex.get(0)]);
-            } 
-        }
+        Collections.shuffle(position);
+        //position.add(position.get(0));
     }
 
     public void computeFitness() {
         double f = 0;
-        for(Edge e : position) {
-            f += e.getWeight();
-            
+        int cnt = 0;
+        for(cnt = 0; cnt < adjacencyMatrix.length-2; cnt++) {
+            if(position.get(cnt+1) != null) {
+                f += adjacencyMatrix[position.get(cnt)][position.get(cnt+1)];
+                //System.out.println("Von " + position.get(cnt) + " nach " + position.get(cnt+1) + " = " + adjacencyMatrix[position.get(cnt)][position.get(cnt+1)]);
+            } else {
+                f += adjacencyMatrix[position.get(cnt)][position.get(0)];
+                break;
+            }
         }
+        f += adjacencyMatrix[position.get(cnt)][position.get(0)];
+        //System.out.println("Von " + position.get(cnt) + " nach " + position.get(0) + " = " + adjacencyMatrix[position.get(cnt)][position.get(0)]);
         setFitness(f);
     }
 
@@ -51,17 +56,19 @@ public class Quokka {
 
     
     public void printTour() {
-        for(Edge e : position) {
-            System.out.println(e.getSourceName() + " -> " + e.getDestName() + " | Gewicht: " + e.getWeight());
+        System.out.print("Quokka Nummer " + identifier + " | ");
+        for(int e : position) {
+            System.out.print(e + " ");
         }
-        System.out.println("Gesamtgewicht: " + fitness + "\n");
+        System.out.print(position.get(0) + "  ");
+        System.out.print("Gesamtgewicht: " + String.format("%.4f", fitness));
     }
 
-    public List<Edge> getPosition() {
+    public List<Integer> getPosition() {
         return position;
     }
 
-    public void setPosition(List<Edge> position) {
+    public void setPosition(List<Integer> position) {
         this.position = position;
     }
 
@@ -80,6 +87,12 @@ public class Quokka {
 
     public void setDrought(double[] drought) {
         this.drought = drought;
+    }
+    public void swapRandom() {
+        int range = position.size();
+        int i = rand.nextInt(0, range);
+        int j = rand.nextInt(0, range);
+        Collections.swap(position, i, j);
     }
 
    

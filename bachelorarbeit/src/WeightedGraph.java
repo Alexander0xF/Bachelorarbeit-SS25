@@ -1,13 +1,18 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class WeightedGraph {
-    private Edge[][] adjacencyMatrix = GraphBuilder();
+    
+    
+    private List<Vertex> cities = new ArrayList<>();
+    private double[][] adjacencyMatrix = GraphBuilder();
     private int numNodes = adjacencyMatrix.length;
 
     public void printGraph() {
         for(int i = 0; i < numNodes; i++) {
             for(int j = 0; j < numNodes; j++) {
-                Edge e = adjacencyMatrix[i][j];
-                System.out.println("Stadt " + e.getSourceName() + " ist verbunden mit Stadt " + e.getDestName() + 
-                " und hat eine Kantenlänge von " + e.getWeight());
+                System.out.println("Stadt " + cities.get(i).getName() + " ist verbunden mit Stadt " + cities.get(j).getName() + 
+                " und hat eine Kantenlänge von " + adjacencyMatrix[i][j]);
             }
             System.out.println("===================================================================");
         }
@@ -19,7 +24,7 @@ public class WeightedGraph {
      * Städtenamen auch Hardcoded, eventuell andere Lösung 
      * @return
      */
-    private Edge[][] GraphBuilder() {
+    private double[][] GraphBuilder() {
         double[][] costs = {
             { 0, 234.5, 876.3, 543.2, 678.9, 432.1, 345.6, 987.6, 654.3, 789.1 },
             { 234.5, 0, 345.2, 654.1, 432.5, 765.4, 543.2, 876.5, 321.6, 678.4 },
@@ -32,7 +37,7 @@ public class WeightedGraph {
             { 654.3, 321.6, 654.9, 876.2, 456.1, 876.5, 987.4, 543.1, 0, 678.2 },
             { 789.1, 678.4, 321.5, 456.3, 876.7, 234.6, 456.8, 321.9, 678.2, 0 }
         };
-        Vertex[] cities = {new Vertex("Hannover", 0), 
+        Vertex[] city = {new Vertex("Hannover", 0), 
         new Vertex("Berlin", 1), 
         new Vertex("Biberach", 2), 
         new Vertex("Hameln", 3)
@@ -43,17 +48,15 @@ public class WeightedGraph {
         new Vertex("Bremen",8),
         new Vertex("Stuttgart", 9),
         new Vertex("Potsdam", 10)};
-        
-        Edge[][] adjacencyMatrix = new Edge[costs.length][costs.length];
-        for(int i = 0; i < costs.length; i++) {
-            for(int j = 0; j < costs.length; j++) {
-                adjacencyMatrix[i][j] = new Edge(cities[i], cities[j], costs[i][j]);
-            }
+        for(int i = 0; i < city.length; i++) {
+            //cities.add(city[i]);
+            cities.add(i, city[i]);
         }
-        return adjacencyMatrix;
+        
+        return costs;
     }
 
-    public Edge[][] getAdjacencyMatrix() {
+    public double[][] getAdjacencyMatrix() {
         return this.adjacencyMatrix;
     }
 
