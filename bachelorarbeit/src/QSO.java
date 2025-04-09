@@ -3,6 +3,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+//TODO
+/*
+ * TSP-Benchmarkdaten integrieren
+ * Formel so ändern, dass sie nicht mehr angpasst werden muss
+ * Diverse Benchmarks durchführen, u.a. mit verschiedenen Konstanten und random Lösungen als Vergleich
+ * Für Tests evtl. Datenbank integrieren?
+  */
 
 public class QSO {
     private WeightedGraph graph;
@@ -10,7 +17,7 @@ public class QSO {
     private Quokka leader;
     private int numCitys;
     private double lastFitness;
-    private static final int MAX_ITERATIONS = 10001;
+    private static final int MAX_ITERATIONS = 1001;
     private static final int MAX_POPULATION = 10;
 
     public QSO() {
@@ -73,7 +80,6 @@ public class QSO {
 
     public void getProbability(Quokka q, int deltaX, double T, double H) {
         double f0 = q.getFitness() - leader.getFitness();
-        if(f0<1) f0 =1;
         double deltaW = leader.getFitness()/f0;
         double zwischen = ((((T+H)/0.8)+(deltaX*deltaW*0.2))/100);
         if(zwischen >= 100) zwischen = 0.01;
